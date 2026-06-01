@@ -67,11 +67,8 @@ async function loop() {
 
         if(best.className === "Palm"){
 
-            alert("Palm detected!");
-
-            // Browsers usually block window.close()
-            // on normal tabs
-        }
+    window.location.href = "https://www.google.com";
+}
     }
 
     requestAnimationFrame(loop);
