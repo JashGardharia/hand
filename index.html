@@ -1,18 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Hand Surf</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hand Surf AI</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- TensorFlow.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+
+    <!-- Teachable Machine -->
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest"></script>
 </head>
 <body>
 
-<h1>Hand Surf 🖐️</h1>
+    <div class="container">
 
-<video id="webcam" autoplay playsinline></video>
+        <h1>🖐️ Hand Surf AI</h1>
 
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image"></script>
+        <p class="subtitle">
+            Control webpage navigation using hand gestures
+        </p>
 
-<script src="script.js"></script>
+        <div id="webcam-container"></div>
+
+        <div id="gesture">
+            Waiting for gesture...
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
 
 </body>
 </html>
