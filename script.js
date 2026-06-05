@@ -1,9 +1,7 @@
 const URL = "./model/";
 
-let model;
-let webcam;
-
-let lastGesture = "";
+let model, webcam;
+let previousGesture = "neutral";
 
 async function init() {
 
@@ -21,8 +19,9 @@ async function init() {
     await webcam.setup();
     await webcam.play();
 
-    document.getElementById("webcam")
-        .srcObject = webcam.webcam.srcObject;
+    document
+        .getElementById("webcam-container")
+        .appendChild(webcam.canvas);
 
     requestAnimationFrame(loop);
 }
@@ -35,40 +34,60 @@ async function loop() {
         await model.predict(webcam.canvas);
 
     let best = prediction.reduce(
-        (a,b)=>
+        (a, b) =>
         a.probability > b.probability
-        ? a : b
+            ? a
+            : b
     );
 
-    if(
-        best.probability > 0.95 &&
-        best.className !== lastGesture
-    ){
+    document.getElementById("gesture")
+        .innerText =
+        "Detected: " +
+        best.className +
+        " (" +
+        (best.probability * 100).toFixed(1) +
+        "%)";
 
-        lastGesture = best.className;
+    if (best.probability > 0.95) {
 
-        console.log(best.className);
+        if (
+            previousGesture === "neutral" &&
+            best.className !== "neutral"
+        ) {
 
-        if(best.className === "Peace"){
+            // PEACE = Scroll Up
+            if (best.className === "peace") {
 
-            window.scrollBy({
-                top:-500,
-                behavior:"smooth"
-            });
+                window.scrollBy({
+                    top: -500,
+                    behavior: "smooth"
+                });
+
+                console.log("Scroll Up");
+            }
+
+            // THUMBS DOWN = Scroll Down
+            if (best.className === "thumbs down") {
+
+                window.scrollBy({
+                    top: 500,
+                    behavior: "smooth"
+                });
+
+                console.log("Scroll Down");
+            }
+
+            // FIVE = Go To Google
+            if (best.className === "five") {
+
+                console.log("Go Home");
+
+                window.location.href =
+                    "https://www.google.com";
+            }
         }
 
-        if(best.className === "ThumbsDown"){
-
-            window.scrollBy({
-                top:500,
-                behavior:"smooth"
-            });
-        }
-
-        if(best.className === "Palm"){
-
-    window.location.href = "https://www.google.com";
-}
+        previousGesture = best.className;
     }
 
     requestAnimationFrame(loop);
